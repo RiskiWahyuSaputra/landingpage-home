@@ -288,48 +288,46 @@ export default function SequenceScroll() {
   }) => {
     const opacity = fadeInHoldOut(p, at - 0.05, at + 0.01, at + 0.1, at + 0.16);
     const drift = clamp((at - p) * 54, -10, 22);
-    const titleMeasure = align === "right" ? "max-w-[13ch]" : "max-w-[12ch]";
 
     return (
       <motion.div
-        className="pointer-events-none absolute left-5 right-5 top-24 z-[50] md:left-10 md:right-auto md:top-28"
+        className="pointer-events-none absolute left-5 right-5 top-24 z-[50] md:left-10 md:right-auto md:top-32"
         style={{ opacity, y: drift }}
       >
-        <div className="relative max-w-[620px] pl-5 text-left md:pl-7">
+        <div className="relative max-w-[680px] pl-6 text-left md:pl-8">
           <div
-            className="absolute -left-2 -top-8 font-serif text-[5.25rem] leading-none text-brand-amber/10 md:-left-4 md:-top-10 md:text-[7.5rem]"
+            className="absolute -left-3 -top-12 font-serif text-[6.5rem] font-light leading-none text-white/[0.03] md:-left-5 md:-top-16 md:text-[9rem]"
             aria-hidden
           >
             {index}
           </div>
 
-          <div className="absolute left-0 top-1 h-[calc(100%-0.25rem)] w-px bg-gradient-to-b from-brand-amber via-white/20 to-transparent" />
+          <div className="absolute left-0 top-0 h-full w-[2px] bg-gradient-to-b from-amber-400/60 via-amber-300/20 to-transparent" />
 
-          <div className="relative">
-            <div className="flex items-center gap-3">
-              <span className="font-serif text-4xl leading-none text-brand-amber/90 md:text-5xl">
+          <div className="relative space-y-6">
+            <div className="flex items-baseline gap-4">
+              <span className="font-serif text-5xl font-light leading-none text-amber-400/95 md:text-6xl">
                 {index}
               </span>
-              <div>
-                <div className="text-[10px] font-semibold uppercase tracking-[0.34em] text-brand-amber/90 md:text-xs">
+              <div className="flex-1">
+                <div className="text-[11px] font-bold uppercase tracking-[0.28em] text-amber-300/90 md:text-xs">
                   {kicker}
                 </div>
-                <div className="mt-2 h-px w-24 bg-gradient-to-r from-brand-amber/80 to-transparent" />
+                <div className="mt-2.5 h-[1.5px] w-28 bg-gradient-to-r from-amber-400/70 via-amber-300/40 to-transparent" />
               </div>
             </div>
 
-            <h2
-              className={`mt-5 ${titleMeasure} font-serif text-4xl italic leading-[0.95] tracking-normal text-brand-offwhite drop-shadow-[0_10px_32px_rgba(0,0,0,0.55)] md:text-6xl`}
-            >
+            <h2 className="max-w-[18ch] font-serif text-[2.75rem] font-light leading-[1.05] tracking-tight text-white drop-shadow-[0_12px_40px_rgba(0,0,0,0.7)] md:text-[4rem] md:leading-[1.08]">
               {title}
             </h2>
-            <p className="mt-4 max-w-[34rem] text-sm leading-relaxed text-brand-offwhite/75 drop-shadow-[0_8px_22px_rgba(0,0,0,0.45)] md:text-base">
+            
+            <p className="max-w-[42ch] text-[15px] font-light leading-[1.7] tracking-wide text-white/85 drop-shadow-[0_10px_28px_rgba(0,0,0,0.6)] md:text-[17px] md:leading-[1.75]">
               {sub}
             </p>
           </div>
 
           {cta && (
-            <div className="pointer-events-auto mt-6">
+            <div className="pointer-events-auto mt-8">
               <MagneticButton>Schedule a Private Viewing</MagneticButton>
             </div>
           )}

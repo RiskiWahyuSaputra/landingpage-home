@@ -35,7 +35,7 @@ export default function FullscreenMenu({
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.18 }}
-          className="fixed inset-0 z-[80] bg-black/92 text-offwhite"
+          className="fixed inset-0 z-[80] backdrop-blur-xl bg-black/60 text-offwhite"
           role="dialog"
           aria-modal="true"
         >
