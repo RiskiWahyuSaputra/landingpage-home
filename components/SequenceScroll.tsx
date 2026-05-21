@@ -10,16 +10,16 @@ import {
 import MagneticButton from "@/components/MagneticButton";
 
 export const SOURCE_FRAME_COUNT = 1323;
-export const FRAME_STEP = 3;
+export const FRAME_STEP = 5;
 export const FRAME_COUNT =
   Math.floor((SOURCE_FRAME_COUNT - 1) / FRAME_STEP) + 1;
 export const FRAME_PREFIX = "/sequence/";
 export const FRAME_PAD = 5;
-export const INITIAL_PRELOAD_COUNT = 10;
+export const INITIAL_PRELOAD_COUNT = 15;
 const MAX_RENDER_DPR = 1.5;
-const PRELOAD_RADIUS = 3;
-const MAX_CACHED_FRAMES = 18;
-const MAX_PENDING_FRAMES = 8;
+const PRELOAD_RADIUS = 5;
+const MAX_CACHED_FRAMES = 30;
+const MAX_PENDING_FRAMES = 12;
 
 export function getFrameSrc(frameIndex: number) {
   const sourceFrame = Math.min(
@@ -73,8 +73,9 @@ export default function SequenceScroll() {
 
   const scrollYProgress = useMotionValue(0);
   const smoothProgress = useSpring(scrollYProgress, {
-    stiffness: 120,
-    damping: 26,
+    stiffness: 80,
+    damping: 30,
+    mass: 0.5,
   });
 
   const progressToFrame = useMemo(() => {
