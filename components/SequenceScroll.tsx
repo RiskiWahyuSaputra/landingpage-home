@@ -321,7 +321,7 @@ export default function SequenceScroll() {
             <h2 className="max-w-[18ch] font-serif text-[2.75rem] font-light leading-[1.05] tracking-tight text-white drop-shadow-[0_12px_40px_rgba(0,0,0,0.7)] md:text-[4rem] md:leading-[1.08]">
               {title}
             </h2>
-            
+
             <p className="max-w-[42ch] text-[15px] font-light leading-[1.7] tracking-wide text-white/85 drop-shadow-[0_10px_28px_rgba(0,0,0,0.6)] md:text-[17px] md:leading-[1.75]">
               {sub}
             </p>
@@ -410,12 +410,12 @@ export default function SequenceScroll() {
             style={{ opacity: fadeInOut(p, 0.9, 0.95, 1.02) }}
           >
             <div className="mx-auto max-w-6xl border-t border-white/10 pt-4 text-xs uppercase tracking-[0.22em] text-offwhite/60 md:flex md:items-center md:justify-between">
-              <div>Modern Forest Villa © 2025</div>
+              <div>RiskiWahyuSaputra©2026</div>
               <div className="mt-2 md:mt-0">
                 Architecture · Interior · Landscape
               </div>
               <div className="mt-2 md:mt-0 md:text-right">
-                Contact / hello@modernforestvilla.com
+                Contact / kiik37734@gmail.com
               </div>
             </div>
           </motion.footer>
