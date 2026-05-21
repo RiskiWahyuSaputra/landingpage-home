@@ -33,18 +33,20 @@ export default function Navbar() {
           </div>
         </div>
 
-        <button
-          type="button"
-          aria-label="Open menu"
-          onClick={() => setOpen(true)}
-          className="group inline-flex items-center gap-2 rounded-full px-3 py-2 text-sm uppercase tracking-wide text-offwhite/80 transition"
-        >
-          <span className="hidden sm:inline">Menu</span>
-          <span
-            className="h-px w-7 bg-offwhite/50 transition-transform duration-300 group-hover:translate-x-1"
-            aria-hidden
-          />
-        </button>
+        {!open && (
+          <button
+            type="button"
+            aria-label="Open menu"
+            onClick={() => setOpen(true)}
+            className="group inline-flex items-center gap-2 rounded-full px-3 py-2 text-sm uppercase tracking-wide text-offwhite/80 transition"
+          >
+            <span className="hidden sm:inline">Menu</span>
+            <span
+              className="h-px w-7 bg-offwhite/50 transition-transform duration-300 group-hover:translate-x-1"
+              aria-hidden
+            />
+          </button>
+        )}
       </div>
 
       <FullscreenMenu open={open} onClose={() => setOpen(false)} />
