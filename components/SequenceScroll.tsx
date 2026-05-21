@@ -1,13 +1,18 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
-import { useScroll, useSpring } from "framer-motion";
-import { motion, useMotionValueEvent } from "framer-motion";
+import {
+  motion,
+  useMotionValue,
+  useMotionValueEvent,
+  useSpring,
+} from "framer-motion";
 import MagneticButton from "@/components/MagneticButton";
 
 export const SOURCE_FRAME_COUNT = 1323;
 export const FRAME_STEP = 3;
-export const FRAME_COUNT = Math.floor((SOURCE_FRAME_COUNT - 1) / FRAME_STEP) + 1;
+export const FRAME_COUNT =
+  Math.floor((SOURCE_FRAME_COUNT - 1) / FRAME_STEP) + 1;
 export const FRAME_PREFIX = "/sequence/";
 export const FRAME_PAD = 5;
 export const INITIAL_PRELOAD_COUNT = 10;
@@ -57,7 +62,8 @@ function fadeInHoldOut(
 
 export default function SequenceScroll() {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
-  const rafRef = useRef<number | null>(null);
+  const drawRafRef = useRef<number | null>(null);
+  const scrollRafRef = useRef<number | null>(null);
   const [currentFrame, setCurrentFrame] = useState(1);
   const latestFrameRef = useRef(1);
   const mountedRef = useRef(false);
@@ -65,7 +71,7 @@ export default function SequenceScroll() {
   const pendingFramesRef = useRef<Set<number>>(new Set());
   const lastDrawnImageRef = useRef<HTMLImageElement | null>(null);
 
-  const { scrollYProgress } = useScroll();
+  const scrollYProgress = useMotionValue(0);
   const smoothProgress = useSpring(scrollYProgress, {
     stiffness: 120,
     damping: 26,
@@ -75,6 +81,16 @@ export default function SequenceScroll() {
     return (p: number) =>
       clamp(Math.round(p * (FRAME_COUNT - 1)) + 1, 1, FRAME_COUNT);
   }, []);
+
+  const updateScrollProgress = () => {
+    const doc = document.documentElement;
+    const scrollTop =
+      window.scrollY || doc.scrollTop || document.body.scrollTop || 0;
+    const scrollHeight = doc.scrollHeight - window.innerHeight;
+    const progress = scrollHeight > 0 ? scrollTop / scrollHeight : 0;
+
+    scrollYProgress.set(clamp(progress, 0, 1));
+  };
 
   const trimFrameCache = (centerFrame: number) => {
     const cache = frameCacheRef.current;
@@ -160,9 +176,13 @@ export default function SequenceScroll() {
       frameCacheRef.current.get(frameIndex) ??
       loadFrame(frameIndex) ??
       findNearestCachedFrame(frameIndex);
-    if (!img || !img.complete || !img.naturalWidth || !img.naturalHeight) return;
+    if (!img || !img.complete || !img.naturalWidth || !img.naturalHeight)
+      return;
 
-    const dpr = Math.max(1, Math.min(MAX_RENDER_DPR, window.devicePixelRatio || 1));
+    const dpr = Math.max(
+      1,
+      Math.min(MAX_RENDER_DPR, window.devicePixelRatio || 1),
+    );
     const width = canvas.clientWidth;
     const height = canvas.clientHeight;
 
@@ -208,11 +228,27 @@ export default function SequenceScroll() {
     mountedRef.current = true;
     preloadAround(1);
 
-    const onResize = () => drawFrame(latestFrameRef.current);
+    const updateScroll = () => {
+      if (scrollRafRef.current) cancelAnimationFrame(scrollRafRef.current);
+      scrollRafRef.current = requestAnimationFrame(() => {
+        updateScrollProgress();
+      });
+    };
+
+    const onResize = () => {
+      updateScrollProgress();
+      drawFrame(latestFrameRef.current);
+    };
+
+    updateScrollProgress();
+    window.addEventListener("scroll", updateScroll, { passive: true });
     window.addEventListener("resize", onResize, { passive: true });
+
     return () => {
       mountedRef.current = false;
+      window.removeEventListener("scroll", updateScroll);
       window.removeEventListener("resize", onResize);
+      if (scrollRafRef.current) cancelAnimationFrame(scrollRafRef.current);
       frameCacheRef.current.clear();
       pendingFramesRef.current.clear();
     };
@@ -227,8 +263,8 @@ export default function SequenceScroll() {
     setCurrentFrame(nextFrame);
     preloadAround(nextFrame);
 
-    if (rafRef.current) cancelAnimationFrame(rafRef.current);
-    rafRef.current = requestAnimationFrame(() => drawFrame(nextFrame));
+    if (drawRafRef.current) cancelAnimationFrame(drawRafRef.current);
+    drawRafRef.current = requestAnimationFrame(() => drawFrame(nextFrame));
   });
 
   const p = (currentFrame - 1) / (FRAME_COUNT - 1);
