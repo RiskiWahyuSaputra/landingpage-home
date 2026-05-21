@@ -5,12 +5,58 @@ import { useEffect } from "react";
 import MagneticButton from "@/components/MagneticButton";
 
 const links = [
-  "Home",
-  "Architecture",
-  "Gallery",
-  "Location",
-  "Contact",
+  { label: "Home", href: "#home" },
+  { label: "Architecture", href: "#architecture" },
+  { label: "Gallery", href: "#gallery" },
+  { label: "Location", href: "#location" },
+  { label: "Contact", href: "#contact" },
 ] as const;
+
+const socialLinks = [
+  {
+    label: "Instagram",
+    href: "https://www.instagram.com/arskies_/",
+  },
+  {
+    label: "Pinterest",
+    href: "https://www.pinterest.com/",
+  },
+  {
+    label: "Email",
+    href: "mailto:kiik37734@gmail.com",
+  },
+  {
+    label: "Maps",
+    href: "#location",
+  },
+] as const;
+
+const scrollToSection = (href: string) => {
+  const id = href.replace(/^#/, "");
+  const targetElement = document.getElementById(id);
+
+  if (targetElement) {
+    targetElement.scrollIntoView({ behavior: "smooth" });
+    return;
+  }
+
+  const scrollTargets: Record<string, number> = {
+    home: 0,
+    architecture: 0.24,
+    gallery: 0.39,
+    location: 0.69,
+    contact: 0.96,
+  };
+
+  const progress = scrollTargets[id] ?? 0;
+  const doc = document.documentElement;
+  const scrollHeight = doc.scrollHeight - window.innerHeight;
+
+  window.scrollTo({
+    top: Math.round(scrollHeight * progress),
+    behavior: "smooth",
+  });
+};
 
 export default function FullscreenMenu({
   open,
@@ -51,10 +97,10 @@ export default function FullscreenMenu({
 
           <div className="mx-auto flex max-w-6xl flex-col items-start px-5">
             <div className="mt-10 flex w-full flex-col gap-4 md:gap-6">
-              {links.map((l, idx) => (
+              {links.map((link, idx) => (
                 <motion.a
-                  key={l}
-                  href="#"
+                  key={link.label}
+                  href={link.href}
                   initial={{ opacity: 0, y: 14 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{
@@ -63,13 +109,17 @@ export default function FullscreenMenu({
                     ease: "easeOut",
                   }}
                   className="group inline-flex items-center gap-4 text-3xl font-medium tracking-tight md:text-5xl"
-                  onClick={(e) => e.preventDefault()}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    onClose();
+                    scrollToSection(link.href);
+                  }}
                 >
                   <span className="w-10 text-xs tracking-[0.22em] text-offwhite/50">
                     {String(idx + 1).padStart(2, "0")}
                   </span>
                   <span className="relative">
-                    {l}
+                    {link.label}
                     <span className="absolute left-0 right-0 bottom-0 h-px origin-left scale-x-0 bg-offwhite/70 transition-transform duration-300 group-hover:scale-x-100" />
                   </span>
                 </motion.a>
@@ -78,16 +128,21 @@ export default function FullscreenMenu({
 
             <div className="mt-10 w-full border-t border-white/10 pt-6">
               <div className="grid grid-cols-2 gap-y-3 gap-x-8 text-sm text-offwhite/80 sm:grid-cols-4">
-                {["Instagram", "Pinterest", "Email", "Maps"].map((s) => (
+                {socialLinks.map((link) => (
                   <a
-                    key={s}
-                    href="#"
+                    key={link.label}
+                    href={link.href}
                     className="group inline-flex items-center gap-2 hover:text-offwhite"
-                    onClick={(e) => e.preventDefault()}
+                    target={link.href.startsWith("http") ? "_blank" : undefined}
+                    rel={
+                      link.href.startsWith("http")
+                        ? "noopener noreferrer"
+                        : undefined
+                    }
                   >
                     <span className="inline-block h-1.5 w-1.5 rounded-full bg-offwhite/35 transition group-hover:bg-offwhite/75" />
                     <span className="relative">
-                      {s}
+                      {link.label}
                       <span className="absolute left-0 right-0 -bottom-1 h-px origin-left scale-x-0 bg-offwhite/70 transition-transform duration-300 group-hover:scale-x-100" />
                     </span>
                   </a>

@@ -339,6 +339,11 @@ export default function SequenceScroll() {
 
   return (
     <section className="relative h-[1300vh]">
+      <div id="home" className="absolute top-0" />
+      <div id="architecture" className="absolute top-[24%]" />
+      <div id="gallery" className="absolute top-[39%]" />
+      <div id="location" className="absolute top-[69%]" />
+      <div id="contact" className="absolute top-[96%]" />
       <div className="sticky top-0 h-screen w-full">
         <div className="relative h-full w-full">
           <canvas ref={canvasRef} className="block h-screen w-full" />
