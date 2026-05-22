@@ -349,7 +349,7 @@ export default function SequenceScroll() {
           <canvas ref={canvasRef} className="block h-screen w-full" />
 
           <div className="absolute inset-0 z-[40] pointer-events-none">
-            <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-black/10 to-black/75" />
+            <div className="absolute inset-0 bg-black/10" />
           </div>
 
           <OverlayBlock

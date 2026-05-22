@@ -85,17 +85,17 @@ export default function FullscreenMenu({
           role="dialog"
           aria-modal="true"
         >
-          <div className="mx-auto flex h-16 max-w-6xl items-center justify-end px-5">
+          <div className="flex h-16 items-center justify-end px-5">
             <button
               type="button"
               onClick={onClose}
-              className="rounded-full border border-white/10 bg-white/5 px-4 py-2 text-xs uppercase tracking-widest text-offwhite/80 hover:bg-white/10"
+              className="rounded-full px-4 py-2 text-xs uppercase tracking-widest text-offwhite/90 transition hover:text-white"
             >
               Close
             </button>
           </div>
 
-          <div className="mx-auto flex max-w-6xl flex-col items-start px-5">
+          <div className="flex flex-col items-start px-5">
             <div className="mt-10 flex w-full flex-col gap-4 md:gap-6">
               {links.map((link, idx) => (
                 <motion.a
@@ -126,7 +126,7 @@ export default function FullscreenMenu({
               ))}
             </div>
 
-            <div className="mt-10 w-full border-t border-white/10 pt-6">
+            <div className="mt-10 w-full pt-6">
               <div className="grid grid-cols-2 gap-y-3 gap-x-8 text-sm text-offwhite/80 sm:grid-cols-4">
                 {socialLinks.map((link) => (
                   <a
