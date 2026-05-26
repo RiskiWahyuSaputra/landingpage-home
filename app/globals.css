@@ -9,6 +9,11 @@
 html,
 body {
   height: 100%;
+  scrollbar-width: none;
+}
+
+body::-webkit-scrollbar {
+  display: none;
 }
 
 body {
